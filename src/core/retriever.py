@@ -203,6 +203,19 @@ DEFAULT_QUERY_ALIASES = {
     "tco": "total cost of ownership",
     "roi": "return on investment payback economics",
     "nhs": "national health service",
+    "barriers": "obstacles challenges bottlenecks",
+    "growth": "outlook projection percent forecast volume",
+}
+
+ANCHOR_ALIASES = {
+    "tco": "total cost of ownership",
+    "roi": "return on investment payback economics",
+    "nhs": "national health service",
+    "french": "france",
+    "german": "germany",
+    "british": "uk united kingdom",
+    "english": "uk united kingdom",
+    "italian": "italy",
 }
 
 
@@ -333,7 +346,7 @@ def evidence_gate(
     # Guard against a semantically high-scoring but clearly out-of-corpus anchor.
     # This stays generic: it looks for acronyms/proper nouns in the query that are
     # not represented anywhere in the corpus, without hard-coding country names.
-    corpus = corpus_text or " ".join(item.chunk.text for item in retrieved)
+    corpus = corpus_text or " ".join(f"{item.chunk.text} {item.chunk.market} {item.chunk.expert_name} {item.chunk.role}" for item in expert_results)
     expanded_query = expand_query(query)
     anchor_terms = _unsupported_anchor_terms(query, expanded_query, corpus)
     if anchor_terms:
@@ -365,7 +378,7 @@ def _unsupported_anchor_terms(original_query: str, expanded_query: str, corpus_t
         is_proper_noun = index > 0 and token[:1].isupper() and token[1:].islower()
         if not (is_acronym or is_proper_noun):
             continue
-        alias_text = DEFAULT_QUERY_ALIASES.get(token.casefold(), "")
+        alias_text = ANCHOR_ALIASES.get(token.casefold(), "")
         if token.casefold() not in corpus and not any(part in corpus for part in alias_text.casefold().split() if part):
             unsupported.append(token)
     return unsupported
