@@ -2,7 +2,7 @@
 
 A closed-loop qualitative document intelligence application for qualitative commercial due diligence on the European robotic surgery market.
 
-**Author**: [Adarsh Aldkar](https://github.com/adarshaldkar)  
+**Author**: [Adarsh patel](https://github.com/adarshaldkar)  
 **Repository**: [https://github.com/adarshaldkar/Hasamex_assessment](https://github.com/adarshaldkar/Hasamex_assessment)
 
 ---
