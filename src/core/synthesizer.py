@@ -19,7 +19,7 @@ from src.prompts.synthesis import PROMPT_VERSION, SYSTEM_PROMPT, build_synthesis
 
 
 class LLMSynthesis(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
     consensus_themes: list[ConsensusTheme] = Field(default_factory=list)
     disagreements: list[DisagreementPoint] = Field(default_factory=list)

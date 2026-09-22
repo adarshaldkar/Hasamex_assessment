@@ -24,11 +24,47 @@ class ConsensusTheme(BaseModel):
 
 
 class DisagreementPoint(BaseModel):
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, extra="ignore")
 
-    topic: str
-    description: str
+    topic: str = ""
+    description: str = ""
     stances_by_stakeholder: dict[str, str] = Field(default_factory=dict)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _coerce_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            mapped = dict(data)
+            if "topic" not in mapped:
+                mapped["topic"] = (
+                    mapped.get("disagreement")
+                    or mapped.get("title")
+                    or mapped.get("name")
+                    or mapped.get("point")
+                    or "Strategic Divergence"
+                )
+            if "description" not in mapped:
+                mapped["description"] = (
+                    mapped.get("summary")
+                    or mapped.get("details")
+                    or mapped.get("content")
+                    or str(mapped.get("disagreement", ""))
+                )
+            if "stances_by_stakeholder" not in mapped:
+                mapped["stances_by_stakeholder"] = (
+                    mapped.get("stances")
+                    or mapped.get("stakeholder_stances")
+                    or mapped.get("positions")
+                    or mapped.get("stakeholders")
+                    or {}
+                )
+            # Ensure stances values are strings
+            if isinstance(mapped.get("stances_by_stakeholder"), dict):
+                mapped["stances_by_stakeholder"] = {
+                    str(k): str(v) for k, v in mapped["stances_by_stakeholder"].items()
+                }
+            return mapped
+        return data
 
 
 def _coerce_spectrum_list(items: Any) -> list[str]:

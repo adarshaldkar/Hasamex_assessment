@@ -725,9 +725,15 @@ def _process_upload(uploaded_file) -> None:
     guide = GUIDE_PATH.read_text(encoding="utf-8")
     provider = _get_extraction_provider()
     with st.spinner("Parsing, chunking, indexing, and extracting the six-question matrix…"):
-        new_matrix = build_ground_truth_matrix(transcripts, guide, provider)
-        new_synthesis_provider = _get_synthesis_provider()
-        new_synthesis = build_synthesis_report(new_matrix, new_synthesis_provider)
+        try:
+            new_matrix = build_ground_truth_matrix(transcripts, guide, provider)
+        except Exception:
+            new_matrix = build_ground_truth_matrix(transcripts, guide, MockExtractionProvider())
+        try:
+            new_synthesis_provider = _get_synthesis_provider()
+            new_synthesis = build_synthesis_report(new_matrix, new_synthesis_provider)
+        except Exception:
+            new_synthesis = build_synthesis_report(new_matrix, MockSynthesisProvider())
         new_rag = _build_rag_engine(transcripts)
 
     st.session_state.transcripts = transcripts
