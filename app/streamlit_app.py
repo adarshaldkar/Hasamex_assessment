@@ -550,7 +550,11 @@ def _render_chat() -> None:
         st.markdown("### Retrieval Filters")
         markets = ["All"] + sorted({t.market for t in st.session_state.transcripts})
         market = st.selectbox("Market", markets, key="chat_market")
-        role_values = ["All"] + sorted({t.role for t in st.session_state.transcripts})
+        if market != "All":
+            available_roles = {t.role for t in st.session_state.transcripts if t.market == market}
+        else:
+            available_roles = {t.role for t in st.session_state.transcripts}
+        role_values = ["All"] + sorted(available_roles)
         role = st.selectbox("Role", role_values, key="chat_role")
         st.caption(f"Evidence gate threshold: {SETTINGS.evidence_gate_threshold:.2f}")
 
