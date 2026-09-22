@@ -8,44 +8,145 @@ A closed-loop qualitative document intelligence application for qualitative comm
 
 The application ingests timestamped expert transcripts across **France** (Dr. Jean Martin), **Germany** (Anna Keller), and the **UK** (Dr. Emily Carter), answers the 6 standardized interview-guide questions, verifies evidence against the original transcript source, synthesizes cross-expert themes and disagreements, and exposes a conversational RAG interface with deterministic citations.
 
-```text
-                    ┌─────────────────────────┐
-                    │ data/*.txt              │
-                    │ interview transcripts   │
-                    └────────────┬────────────┘
-                                 │
-                                 ▼
-                    ┌─────────────────────────┐
-                    │ Deterministic Parser     │
-                    │ + SHA-256 + provenance  │
-                    └────────────┬────────────┘
-                                 │
-               ┌──────────────────┼───────────────────┐
-               ▼                  ▼                   ▼
-         Structured Matrix    Turn-level chunks     Transcript store
-               │                  │
-               ▼                  ▼
-         Cross-expert        BM25 + vector
-          synthesis               │
-                                  ▼
-                            RRF (k=60)
-                                  │
-                                  ▼
-                          Evidence gate (>=0.50)
-                                  │
-                                  ▼
-                       LLM answer + evidence IDs
-                                  │
-                                  ▼
-                     Deterministic source lookup
-                                  │
-                                  ▼
-                        Streamlit dashboard
+---
+
+## 2. System Architecture Diagram
+
+```mermaid
+flowchart TD
+    subgraph Ingestion ["Stage 1: Position-Preserving Ingestion & Indexing"]
+        TXT["📄 Raw .txt Transcripts\n(France, Germany, UK)"] --> PARSER["Deterministic Parser\n(Regex + SHA-256)"]
+        PARSER --> TURNS["DialogueTurn Models\n[start_char, end_char, start_line, end_line]"]
+        TURNS --> CHUNKER["Contextual Dialogue Chunker"]
+        CHUNKER --> BM25["BM25 Lexical Index"]
+        CHUNKER --> VEC["Chroma Dense Vector Index\n(all-MiniLM-L6-v2)"]
+    end
+
+    subgraph ExtractionVerification ["Stage 2: Closed-Loop Verification & Matrix Extraction"]
+        TURNS --> EXTRACT["6-Question Extractor\n(Candidate Answers + Turn IDs)"]
+        EXTRACT --> VERIFIER{"Deterministic Quote Verifier\n(Exact / Normalized / Fallback)"}
+        VERIFIER -->|"Verified Citations"| MATRIX["Ground-Truth Matrix (6x3 Grid)\n(storage/processed/ground_truth_matrix.json)"]
+    end
+
+    subgraph CrossExpertSynthesis ["Stage 3: Cross-Expert Synthesis"]
+        MATRIX --> SYNTH["Synthesis Engine"]
+        SYNTH --> REPORT["Synthesis Report\n• Shared Consensus Themes\n• Strategic Disagreements\n• 3-Year Growth Spectrum"]
+    end
+
+    subgraph HybridRAG ["Stage 4: Hybrid RAG & Guardrailed QA"]
+        QUERY["User / CDD Analyst Query"] --> HYBRID["Hybrid Retriever\n(BM25 + Dense)"]
+        BM25 & VEC --> HYBRID
+        HYBRID --> RRF["Reciprocal Rank Fusion\n(RRF k=60)"]
+        RRF --> GATE{"Evidence Gate\n(Max RRF Score >= 0.50)"}
+        GATE -->|"Sufficient Evidence"| LLM["LLM Response Generator\n(Extracts Evidence Turn IDs)"]
+        GATE -->|"Insufficient Evidence"| ABSTAIN["Deterministic Abstention Guardrail\n('Insufficient evidence in transcripts')"]
+        LLM --> LOOKUP["Deterministic Source Lookup\n(Injects Verbatim Quotes & Lines)"]
+    end
+
+    subgraph UI ["Stage 5: Presentation & Interactive UI"]
+        MATRIX --> ST_MATRIX["1. Matrix View\n(6x3 Grid + Evidence Drawer)"]
+        REPORT --> ST_SYNTH["2. Synthesis View\n(Consensus & Conflicts)"]
+        LOOKUP & ABSTAIN --> ST_CHAT["3. AI Chat View\n(Interactive RAG + Deep Citations)"]
+        TURNS --> ST_INSPECT["4. Transcript Inspector\n(Line-Numbered + Auto-Scroll)"]
+        UPLOAD["Drag-and-Drop Upload"] --> ST_UPLOAD["5. Upload View\n(Dynamic Session Rebuild)"]
+    end
 ```
 
 ---
 
-## 2. Evidence Contract & Closed-Loop Verification
+## 3. Data Model & Schema Diagram
+
+```mermaid
+classDiagram
+    class TranscriptDocument {
+        +string transcript_id
+        +string file_hash (SHA-256)
+        +string filename
+        +string expert_name
+        +string role
+        +string market
+        +string raw_text
+        +list~DialogueTurn~ turns
+        +int total_turns
+        +string duration_str
+    }
+
+    class DialogueTurn {
+        +string turn_id
+        +string transcript_id
+        +string timestamp
+        +int seconds
+        +string speaker
+        +SpeakerType speaker_type
+        +string role
+        +string market
+        +string content
+        +int start_char
+        +int end_char
+        +int start_line
+        +int end_line
+    }
+
+    class QuoteCitation {
+        +string turn_id
+        +string transcript_id
+        +string expert_name
+        +string speaker
+        +string timestamp
+        +string quote
+        +EvidenceStatus evidence_status
+        +float match_score
+        +int start_char
+        +int end_char
+        +int start_line
+        +int end_line
+    }
+
+    class QuestionAnswer {
+        +string question_id
+        +string question_text
+        +string answer
+        +list~string~ evidence_turn_ids
+        +list~QuoteCitation~ citations
+        +string confidence
+    }
+
+    class GroundTruthMatrix {
+        +list~TranscriptAnalysis~ analyses
+        +string generated_at
+        +string schema_version
+        +get_answer(expert, question_id)
+        +get_column(expert)
+        +get_row(question_id)
+    }
+
+    class SynthesisReport {
+        +list~ConsensusTheme~ consensus_themes
+        +list~DisagreementPoint~ disagreements
+        +MarketGrowthSpectrum market_growth_spectrum
+        +string generated_at
+    }
+
+    class RAGResponse {
+        +string query
+        +string answer
+        +list~QuoteCitation~ citations
+        +list~RetrievalResult~ retrieved_chunks
+        +EvidenceGateResult evidence_gate
+        +bool abstained
+    }
+
+    TranscriptDocument "1" *-- "many" DialogueTurn : contains
+    GroundTruthMatrix "1" *-- "many" QuestionAnswer : stores 6xN answers
+    QuestionAnswer "1" *-- "many" QuoteCitation : backed by verified
+    DialogueTurn "1" ..> "1" QuoteCitation : exact coordinates
+    SynthesisReport ..> GroundTruthMatrix : synthesizes
+    RAGResponse "1" *-- "many" QuoteCitation : cites
+```
+
+---
+
+## 4. Evidence Contract & Closed-Loop Verification
 
 The LLM does not define the final citation text. It returns `evidence_turn_ids`; the application resolves those IDs against the canonical `TranscriptDocument` and extracts the exact source quote, timestamp, and line/character provenance:
 
@@ -56,7 +157,7 @@ The LLM does not define the final citation text. It returns `evidence_turn_ids`;
 
 ---
 
-## 3. Five-Screen Interactive Streamlit Application
+## 5. Five-Screen Interactive Streamlit Application
 
 1. **MATRIX** — Dynamic $6 \times 3$ comparative question matrix. Cached answers load with zero token spend; timestamp buttons open the Evidence Drawer.
 2. **SYNTHESIS** — Shared Consensus Themes, Strategic Disagreements with stakeholder positions, and the 3-Year Market Growth Spectrum (Conservative, Moderate, Bullish).
@@ -66,7 +167,7 @@ The LLM does not define the final citation text. It returns `evidence_turn_ids`;
 
 ---
 
-## 4. Main Codebase Structure
+## 6. Main Codebase Structure
 
 ```text
 src/
@@ -107,7 +208,7 @@ tests/
 
 ---
 
-## 5. Local Setup & Quickstart
+## 7. Local Setup & Quickstart
 
 ### Prerequisites
 - Python 3.11+
@@ -141,7 +242,7 @@ cp .env.example .env
 
 ---
 
-## 6. Verification Commands
+## 8. Verification Commands
 
 ### Run Full Automated Test Suite (38 Tests)
 ```bash
@@ -160,6 +261,15 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## 7. Interview Demonstration & Presentation
+## 9. Deep Dive Documentation & Architecture
+
+For additional technical blueprints, benchmarks, and scaling discussions:
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Comprehensive System Architecture & Deep Pipeline Analysis
+- [docs/SCALABILITY.md](docs/SCALABILITY.md) — Production Scale & Latency Optimization
+- [docs/BENCHMARK_AND_REFERENCES.md](docs/BENCHMARK_AND_REFERENCES.md) — Literature & Industry Benchmark Grounding
+
+---
+
+## 10. Interview Demonstration & Presentation
 
 See [`docs/INTERVIEW_DEMO_SCRIPT.md`](docs/INTERVIEW_DEMO_SCRIPT.md) for a complete 5–10 minute live walkthrough guide with minute-by-minute talking points, UI navigation steps, and production scaling answers.
