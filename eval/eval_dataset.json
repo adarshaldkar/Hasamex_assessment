@@ -1,0 +1,59 @@
+{
+  "version": "eval_v1",
+  "description": "Small deterministic evaluation set for the Hasamex transcript RAG pipeline.",
+  "cases": [
+    {
+      "id": "fr_q1_adoption",
+      "query": "How would you describe robotic surgery adoption in France today?",
+      "market": "France",
+      "expected_turn_ids": ["france_001_turn_02"]
+    },
+    {
+      "id": "fr_q3_roi",
+      "query": "How important is ROI in French hospital purchasing decisions for robotic surgery?",
+      "market": "France",
+      "expected_turn_ids": ["france_001_turn_06"]
+    },
+    {
+      "id": "de_q3_economics",
+      "query": "What does procurement in Germany look at when evaluating a robotic surgery system?",
+      "market": "Germany",
+      "expected_turn_ids": ["germany_001_turn_06"]
+    },
+    {
+      "id": "de_q6_timeline",
+      "query": "How long can the German hospital robotic purchase process take?",
+      "market": "Germany",
+      "expected_turn_ids": ["germany_001_turn_14"]
+    },
+    {
+      "id": "uk_q2_barriers",
+      "query": "What are the main barriers to robotic surgery adoption in the UK?",
+      "market": "United Kingdom",
+      "expected_turn_ids": ["uk_001_turn_04"]
+    },
+    {
+      "id": "uk_q5_growth",
+      "query": "What is the UK outlook for robotic surgery over the next three to five years?",
+      "market": "United Kingdom",
+      "expected_turn_ids": ["uk_001_turn_10"]
+    },
+    {
+      "id": "cross_market_timeline",
+      "query": "Compare hospital purchase timelines for robotic surgery across France, Germany, and the UK.",
+      "market": null,
+      "expected_turn_ids": [
+        "france_001_turn_14",
+        "germany_001_turn_14",
+        "uk_001_turn_12"
+      ]
+    },
+    {
+      "id": "out_of_scope_japan",
+      "query": "What is the robotic surgery market size in Japan?",
+      "market": null,
+      "expected_turn_ids": [],
+      "expect_abstention": true
+    }
+  ]
+}

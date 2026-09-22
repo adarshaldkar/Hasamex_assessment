@@ -1,0 +1,27 @@
+# Web Application & API
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+streamlit>=1.32.0
+
+# Data Validation & Parsing
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+python-dotenv>=1.0.1
+
+# AI & LLM Providers
+openai>=1.14.0
+google-genai>=0.1.1
+google-generativeai>=0.5.0
+
+# Retrieval & Search (Hybrid BM25 + Vector)
+rank-bm25>=0.2.2
+chromadb>=0.4.24
+sentence-transformers>=2.5.0
+
+# String Matching & Verification
+thefuzz>=0.22.1
+python-Levenshtein>=0.25.0
+
+# Testing & Quality
+pytest>=8.0.0
+requests>=2.31.0

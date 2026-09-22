@@ -1,0 +1,150 @@
+{
+  "dataset_version": "eval_v1",
+  "metrics": {
+    "retrieval_hit_at_k": 0.7143,
+    "expert_only_rate": 1.0,
+    "citation_resolution_rate": 1.0,
+    "abstention_accuracy": 1.0
+  },
+  "cases": [
+    {
+      "case_id": "fr_q1_adoption",
+      "retrieved_turn_ids": [
+        "france_001_turn_02",
+        "france_001_turn_12",
+        "france_001_turn_10"
+      ],
+      "expected_turn_ids": [
+        "france_001_turn_02"
+      ],
+      "hit_at_k": true,
+      "expert_only": true,
+      "abstained": false,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "fr_q3_roi",
+      "retrieved_turn_ids": [
+        "france_001_turn_10",
+        "france_001_turn_08",
+        "france_001_turn_04",
+        "france_001_turn_06"
+      ],
+      "expected_turn_ids": [
+        "france_001_turn_06"
+      ],
+      "hit_at_k": true,
+      "expert_only": true,
+      "abstained": true,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "de_q3_economics",
+      "retrieved_turn_ids": [
+        "germany_001_turn_06",
+        "germany_001_turn_08",
+        "germany_001_turn_14"
+      ],
+      "expected_turn_ids": [
+        "germany_001_turn_06"
+      ],
+      "hit_at_k": true,
+      "expert_only": true,
+      "abstained": false,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "de_q6_timeline",
+      "retrieved_turn_ids": [
+        "germany_001_turn_08",
+        "germany_001_turn_04",
+        "germany_001_turn_14"
+      ],
+      "expected_turn_ids": [
+        "germany_001_turn_14"
+      ],
+      "hit_at_k": true,
+      "expert_only": true,
+      "abstained": false,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "uk_q2_barriers",
+      "retrieved_turn_ids": [
+        "uk_001_turn_02",
+        "uk_001_turn_14"
+      ],
+      "expected_turn_ids": [
+        "uk_001_turn_04"
+      ],
+      "hit_at_k": false,
+      "expert_only": true,
+      "abstained": false,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "uk_q5_growth",
+      "retrieved_turn_ids": [
+        "uk_001_turn_12",
+        "uk_001_turn_14",
+        "uk_001_turn_02",
+        "uk_001_turn_06"
+      ],
+      "expected_turn_ids": [
+        "uk_001_turn_10"
+      ],
+      "hit_at_k": false,
+      "expert_only": true,
+      "abstained": false,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "cross_market_timeline",
+      "retrieved_turn_ids": [
+        "france_001_turn_14",
+        "france_001_turn_06",
+        "france_001_turn_10",
+        "uk_001_turn_12"
+      ],
+      "expected_turn_ids": [
+        "france_001_turn_14",
+        "germany_001_turn_14",
+        "uk_001_turn_12"
+      ],
+      "hit_at_k": true,
+      "expert_only": true,
+      "abstained": false,
+      "abstention_expected": false,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    },
+    {
+      "case_id": "out_of_scope_japan",
+      "retrieved_turn_ids": [
+        "uk_001_turn_02",
+        "uk_001_turn_14",
+        "france_001_turn_14",
+        "germany_001_turn_04"
+      ],
+      "expected_turn_ids": [],
+      "hit_at_k": false,
+      "expert_only": true,
+      "abstained": true,
+      "abstention_expected": true,
+      "citation_resolvable": true,
+      "answer_nonempty": true
+    }
+  ]
+}

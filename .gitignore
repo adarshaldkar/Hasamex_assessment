@@ -1,0 +1,28 @@
+# Environment variables & secrets
+.env
+*.env.local
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+
+# Storage & local databases
+storage/chroma/*
+!storage/chroma/.gitkeep
+storage/processed/*
+!storage/processed/.gitkeep
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing & logs
+.pytest_cache/
+*.log
