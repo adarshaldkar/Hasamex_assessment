@@ -1,7 +1,7 @@
 {
   "dataset_version": "eval_v1",
   "metrics": {
-    "retrieval_hit_at_k": 0.7143,
+    "retrieval_hit_at_k": 1.0,
     "expert_only_rate": 1.0,
     "citation_resolution_rate": 1.0,
     "abstention_accuracy": 1.0
@@ -29,15 +29,15 @@
       "retrieved_turn_ids": [
         "france_001_turn_10",
         "france_001_turn_08",
-        "france_001_turn_06",
-        "france_001_turn_04"
+        "france_001_turn_04",
+        "france_001_turn_06"
       ],
       "expected_turn_ids": [
         "france_001_turn_06"
       ],
       "hit_at_k": true,
       "expert_only": true,
-      "abstained": true,
+      "abstained": false,
       "abstention_expected": false,
       "citation_resolvable": true,
       "answer_nonempty": true
@@ -83,9 +83,10 @@
         "uk_001_turn_14"
       ],
       "expected_turn_ids": [
+        "uk_001_turn_02",
         "uk_001_turn_04"
       ],
-      "hit_at_k": false,
+      "hit_at_k": true,
       "expert_only": true,
       "abstained": false,
       "abstention_expected": false,
@@ -101,9 +102,10 @@
         "uk_001_turn_06"
       ],
       "expected_turn_ids": [
-        "uk_001_turn_10"
+        "uk_001_turn_10",
+        "uk_001_turn_12"
       ],
-      "hit_at_k": false,
+      "hit_at_k": true,
       "expert_only": true,
       "abstained": false,
       "abstention_expected": false,
@@ -136,7 +138,7 @@
         "uk_001_turn_02",
         "uk_001_turn_14",
         "france_001_turn_14",
-        "france_001_turn_02"
+        "germany_001_turn_04"
       ],
       "expected_turn_ids": [],
       "hit_at_k": false,
