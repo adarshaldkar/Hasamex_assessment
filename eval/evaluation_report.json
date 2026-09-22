@@ -29,8 +29,8 @@
       "retrieved_turn_ids": [
         "france_001_turn_10",
         "france_001_turn_08",
-        "france_001_turn_04",
-        "france_001_turn_06"
+        "france_001_turn_06",
+        "france_001_turn_04"
       ],
       "expected_turn_ids": [
         "france_001_turn_06"
@@ -136,7 +136,7 @@
         "uk_001_turn_02",
         "uk_001_turn_14",
         "france_001_turn_14",
-        "germany_001_turn_04"
+        "france_001_turn_02"
       ],
       "expected_turn_ids": [],
       "hit_at_k": false,

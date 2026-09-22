@@ -1,0 +1,45 @@
+Expert 4 – Dr. Matteo Rossi
+Role: Director of Robotic Surgery
+Market: Italy
+
+00:00
+Interviewer: Welcome Dr. Rossi. Thank you for joining this due diligence session on the European robotic surgery landscape.
+
+00:18
+Dr. Rossi: Thank you. It is a pleasure to share our clinical experience from Milan and across Northern Italy.
+
+00:42
+Interviewer: Let us begin with the first question: What are the primary clinical and operational drivers behind robotic surgery adoption in your market?
+
+01:05
+Dr. Rossi: In Italy, the key driver is precision in complex pelvic procedures like radical prostatectomies and partial nephrectomies. Clinically, 3D visualization and tremor filtration reduce blood loss significantly. Operationally, it cuts average length of stay from four days down to two days, freeing up critical hospital ward capacity.
+
+02:15
+Interviewer: Moving to question two: How do hospitals evaluate payback period and total cost of ownership when procuring surgical robots?
+
+02:38
+Dr. Rossi: Private regional clinics calculate a strict payback period of 2.5 to 3 years based on a minimum threshold of 250 procedures annually. For public university hospitals, total cost of ownership is dominated by recurring annual service contracts and instrument replacement costs, which run between 1,800 to 2,200 euros per case.
+
+03:50
+Interviewer: Question three: What are the main obstacles to adoption or scaling across different hospital tiers?
+
+04:14
+Dr. Rossi: High upfront capital cost of 1.5 to 2 million euros remains the major barrier for community hospitals. Additionally, surgeon learning curves create a temporary bottleneck, as proctored training requires 30 to 40 supervised cases before operating independently at full speed.
+
+05:30
+Interviewer: Question four: What are the utilization rates and cross-specialty adoption patterns in your institution?
+
+05:55
+Dr. Rossi: Our system runs at 82% utilization across five operating days. Urology accounts for 55% of procedures, followed by gynecology at 30%, and colorectal general surgery taking up the remaining 15%. Multi-specialty usage is essential to justify maintenance fees.
+
+07:10
+Interviewer: Question five: How do competing robotic platforms compare in terms of technical capabilities and pricing?
+
+07:35
+Dr. Rossi: Intuitive Surgical's da Vinci platform remains the undisputed gold standard for reliability and multi-quadrant access. Emerging modular multi-port systems offer lower capital acquisition costs by 20% to 30%, but their instruments lack the same wrist articulation and haptic feedback maturity.
+
+08:45
+Interviewer: Finally question six: What is your 3-year market outlook and growth projection for procedure volumes?
+
+09:10
+Dr. Rossi: We anticipate strong annual procedure growth of 14% to 16% over the next three years. Expanding reimbursement for thoracic and colorectal robotic indications will accelerate regional adoption beyond tier-1 academic centers.
